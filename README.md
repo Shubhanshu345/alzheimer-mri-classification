@@ -1,21 +1,23 @@
-# Alzheimer's Disease Stage Classification Using MRI
+# Alzheimer's MRI Classification
 
-## About the Project
-This project uses a Convolutional Neural Network (CNN) to classify brain MRI images into four categories: Mild Demented, Moderate Demented, Non-Demented, and Very Mild Demented.
+An academic Streamlit application using the existing CNN model to classify brain MRI images into four dataset categories.
 
-## Technologies Used
-- Python
-- TensorFlow and Keras
-- NumPy
-- Pillow
-- Streamlit
+## Dashboard features
+- Premium dark navy and electric-blue interface
+- Sidebar navigation: Overview, MRI Analysis, Model Information, About Project
+- MRI image upload and preview
+- CNN inference using the existing `alzheimer_cnn_model.keras` model
+- Predicted class and model output scores for all four categories
+- Research-only and non-diagnostic notices
 
-## How to Run Locally
-1. Clone or download this repository.
-2. Install the required libraries:
-   `pip install -r requirements.txt`
-3. Run the application:
-   `streamlit run app.py`
+## Run locally
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
 
-## Important Note
-This project is an academic research prototype. Its predictions are experimental and must not be used for medical diagnosis or treatment decisions.
+## Streamlit deployment
+Keep `app.py`, `requirements.txt`, and `alzheimer_cnn_model.keras` in the repository root. In Streamlit Community Cloud, deploy the same GitHub repository and select `app.py` as the main file.
+
+## Important
+This is an academic research prototype, not a medical device. Do not use it for diagnosis, treatment, or clinical decisions. Model output scores are experimental and are not calibrated diagnostic probabilities.
