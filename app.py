@@ -90,15 +90,7 @@ with st.sidebar:
     st.markdown("🟢 Academic research prototype")
     st.caption("Not intended for clinical diagnosis.")
 
-# ---------------- Main banner ----------------
-st.markdown("""
-<div class="hero">
-  <div class="eyebrow">AI-powered medical imaging research</div>
-  <h1>Alzheimer's MRI Classification</h1>
-  <p>Experimental CNN-based classification of brain MRI images across four dataset categories.</p>
-</div>
-""", unsafe_allow_html=True)
-
+# Each selected page now renders its own themed full-width banner below.
 
 # ---------------- Full-width photo banners for dashboard sections ----------------
 SECTION_BANNERS = {
