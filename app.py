@@ -28,6 +28,14 @@ background:linear-gradient(120deg,rgba(28,70,115,.92),rgba(13,32,55,.96)); margi
 .eyebrow { color:#83c0ff; text-transform:uppercase; letter-spacing:2px; font-size:11px; font-weight:700; }
 .hero h1 { font-size:clamp(27px,4vw,38px); margin:8px 0 6px; }
 .hero p { color:#bed0e5; margin:0; font-size:15px; }
+.team-card { background:linear-gradient(145deg,rgba(20,48,78,.96),rgba(10,25,44,.96)); border:1px solid #315779; border-radius:18px; padding:22px 18px; min-height:150px; box-shadow:0 8px 24px rgba(0,0,0,.16); }
+.team-avatar { width:54px; height:54px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#4ea1ff,#7c5cff); color:#fff; font-size:20px; font-weight:800; margin-bottom:14px; }
+.team-name { font-family:'Manrope'; font-size:18px; font-weight:800; color:#f4f8ff; margin-bottom:5px; }
+.team-role { color:#9fc9f5; font-size:12px; letter-spacing:.5px; text-transform:uppercase; }
+.institution-banner { border:1px solid #355b7e; border-radius:18px; padding:20px 24px; background:linear-gradient(120deg,rgba(129,32,44,.26),rgba(16,35,61,.92)); display:flex; align-items:center; gap:16px; margin:18px 0; }
+.iilm-mark { width:58px; height:58px; flex-shrink:0; display:flex; align-items:center; justify-content:center; border-radius:12px; background:#81202c; color:#fff; font-family:'Manrope'; font-weight:800; font-size:18px; letter-spacing:1px; }
+.institution-title { font-family:'Manrope'; font-size:19px; font-weight:800; color:#f4f8ff; }
+.institution-subtitle { color:#b9cde2; font-size:13px; margin-top:4px; }
 .metric { background:rgba(16,35,61,.9); border:1px solid #294866; border-radius:16px; padding:18px; min-height:112px; }
 .metric-label { color:#9bb0c9; font-size:12px; text-transform:uppercase; letter-spacing:1px; }
 .metric-value { color:#f5f9ff; font-family:'Manrope'; font-weight:800; font-size:25px; margin-top:8px; }
@@ -246,19 +254,54 @@ elif page == "Model Performance":
     st.caption("Individual prediction scores shown in MRI Analysis are experimental model outputs, not diagnostic probabilities.")
 
 elif page == "Project Team":
-    st.markdown('<div class="kicker">PROJECT TEAM</div>', unsafe_allow_html=True)
-    st.subheader("Alzheimer’s Disease Stage Classification Using MRI")
-    st.markdown("### Project Lead & Website Developer")
-    st.markdown('<div class="panel"><h2>Shubhanshu Mishra</h2><p>Website implementation · UI design · Model integration · Deployment</p></div>', unsafe_allow_html=True)
-    st.markdown("### Team Members")
+    st.markdown('<div class="kicker">PROJECT TEAM & INSTITUTION</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="institution-banner">
+      <div class="iilm-mark">IILM</div>
+      <div>
+        <div class="institution-title">IILM UNIVERSITY</div>
+        <div class="institution-subtitle">Greater Noida · School of Computer Science & Engineering</div>
+        <div class="institution-subtitle">Learn with Purpose, Lead with Purpose</div>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("## Alzheimer's Disease Stage Classification Using MRI")
+    st.caption("Academic major project · CNN-based MRI image classification")
+    st.markdown("### Project Lead & Developer")
+    st.markdown("""
+    <div class="team-card">
+      <div class="team-avatar">SM</div>
+      <div class="team-name">Shubhanshu Mishra</div>
+      <div class="team-role">Project Lead · Website Developer · Model Integration</div>
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("### Project Team")
+    team_data = [
+        ("BS", "Brhamansh Singh"),
+        ("SP", "Sumit Pathak"),
+        ("K", "Khushi"),
+    ]
     team_cols = st.columns(3)
-    for col, member in zip(team_cols, ["Brhamansh Singh", "Sumit Pathak", "Khushi"]):
+    for col, (initials, member) in zip(team_cols, team_data):
         with col:
-            st.markdown(f'<div class="panel"><h3>{member}</h3></div>', unsafe_allow_html=True)
+            st.markdown(f"""
+            <div class="team-card">
+              <div class="team-avatar">{initials}</div>
+              <div class="team-name">{member}</div>
+              <div class="team-role">Project Team Member</div>
+            </div>
+            """, unsafe_allow_html=True)
     st.markdown("### Faculty Guide")
-    st.markdown('<div class="panel"><h3>Kanika Kansal</h3></div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="team-card">
+      <div class="team-avatar">FK</div>
+      <div class="team-name">Kanika Kansal</div>
+      <div class="team-role">Faculty Guide</div>
+    </div>
+    """, unsafe_allow_html=True)
     st.markdown("### Institution")
-    st.markdown('<div class="panel"><h3>IILM University, Greater Noida</h3></div>', unsafe_allow_html=True)
+    st.markdown("**IILM University, Greater Noida**")
+    st.caption("This is an academic research prototype and is not intended for clinical diagnosis.")
 
 elif page == "About Project":
     st.markdown('<div class="kicker">PROJECT OVERVIEW</div>', unsafe_allow_html=True)
