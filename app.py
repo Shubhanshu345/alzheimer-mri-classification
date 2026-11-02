@@ -253,8 +253,12 @@ elif page == "MRI Analysis":
                     "Output score (%)": [round(float(score) * 100, 2) for score in saved_predictions],
                 }
                 st.bar_chart(
-                    {"Output score (%)": score_table["Output score (%)"]},
-                    x=score_table["Dataset category"],
+                    {
+                        "Dataset category": score_table["Dataset category"],
+                        "Output score (%)": score_table["Output score (%)"],
+                    },
+                    x="Dataset category",
+                    y="Output score (%)",
                     horizontal=True,
                 )
                 for class_name, score in zip(CLASS_NAMES, saved_predictions):
