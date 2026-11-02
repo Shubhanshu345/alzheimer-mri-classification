@@ -161,6 +161,27 @@ if page == "Overview":
         )
         st.markdown('</div>', unsafe_allow_html=True)
 
+    st.markdown("---")
+    st.markdown('<div class="kicker">SYSTEM METHODOLOGY</div>', unsafe_allow_html=True)
+    st.subheader("How the application works")
+    methodology = [
+        ("01", "MRI Image Upload", "User selects a JPG, JPEG, or PNG image."),
+        ("02", "Image Preprocessing", "Convert to RGB, resize to 128 × 128, and scale pixels to 0–1."),
+        ("03", "CNN Inference", "Pass the processed image to the saved CNN model."),
+        ("04", "Output Display", "Show the predicted dataset class and model output scores."),
+    ]
+    method_cols = st.columns(4)
+    for col, (number, title, description) in zip(method_cols, methodology):
+        with col:
+            st.markdown(f"""
+            <div class="team-card" style="min-height:185px">
+              <div class="team-avatar">{number}</div>
+              <div class="team-name">{title}</div>
+              <div class="muted">{description}</div>
+            </div>
+            """, unsafe_allow_html=True)
+    st.caption("Workflow reflects the current app implementation. Model output is experimental and not a clinical assessment.")
+
 elif page == "MRI Analysis":
     st.markdown('<div class="kicker">IMAGE INFERENCE</div>', unsafe_allow_html=True)
     st.subheader("Upload MRI for analysis")
