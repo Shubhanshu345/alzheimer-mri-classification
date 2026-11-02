@@ -288,8 +288,6 @@ elif page == "MRI Analysis":
                 st.warning(
                     "Research use only. Do not use this result to make medical decisions."
                 )
-                except Exception as error:
-                    st.error(f"Unable to run the model: {error}")
         except Exception:
             st.error("This file could not be opened. Please upload a valid JPG, JPEG, or PNG image.")
     else:
