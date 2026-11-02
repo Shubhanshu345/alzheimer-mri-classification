@@ -20,9 +20,17 @@ st.markdown("""
 :root { --navy:#071426; --panel:#10233d; --blue:#4ea1ff; --muted:#9bb0c9; }
 html, body, [class*="css"] { font-family:Arial,sans-serif; }
 .stApp { background:radial-gradient(circle at 82% 0%,#17395d 0%,#0a1b30 36%,#071426 78%); color:#edf5ff; }
-.block-container { max-width:1400px; padding-top:2rem; padding-bottom:3rem; }
-[data-testid="stSidebar"] { background:#08172a; border-right:1px solid #1d3858; }
+.block-container { max-width:100%; padding:1.15rem 2rem 3rem; }
+[data-testid="stSidebar"] { background:linear-gradient(180deg,#061329 0%,#071b36 65%,#031020 100%); border-right:1px solid #174a83; }
 [data-testid="stSidebar"] * { color:#dceaff; }
+[data-testid="stSidebar"] [data-testid="stRadio"] > label { color:#63c5ff !important; font-weight:800; letter-spacing:1px; font-size:12px; }
+[data-testid="stSidebar"] [role="radiogroup"] { gap:5px; }
+[data-testid="stSidebar"] [role="radiogroup"] label { border-radius:10px; padding:7px 10px; transition:all .15s ease; }
+[data-testid="stSidebar"] [role="radiogroup"] label:hover { background:rgba(26,111,220,.20); }
+[data-testid="stSidebar"] [role="radiogroup"] label[data-checked="true"] { background:linear-gradient(90deg,#0759c8,#087bff); box-shadow:0 0 18px rgba(0,125,255,.24); }
+.stApp { background:radial-gradient(ellipse at 65% 0%,#0c3a72 0%,#061a34 38%,#020b18 100%); color:#edf5ff; }
+.hero { padding:28px 30px; border:1px solid #2a4d72; border-radius:22px;
+background:linear-gradient(120deg,rgba(28,70,115,.92),rgba(13,32,55,.96)); margin-bottom:24px; }
 h1,h2,h3 { font-family:Arial,sans-serif; color:#f4f8ff; }
 .hero { padding:28px 30px; border:1px solid #2a4d72; border-radius:22px;
 background:linear-gradient(120deg,rgba(28,70,115,.92),rgba(13,32,55,.96)); margin-bottom:24px; }
@@ -105,15 +113,15 @@ SECTION_BANNERS = {
 
 def render_section_hero(title, subtitle, image_url):
     st.markdown(f"""
-    <div style="width:100%;min-height:300px;display:flex;align-items:center;padding:36px 42px;
-    margin:0 0 28px;border-radius:24px;overflow:hidden;border:1px solid #315779;
-    background-image:linear-gradient(90deg,rgba(5,16,31,.94) 0%,rgba(7,24,43,.82) 43%,rgba(7,24,43,.18) 100%),url('{image_url}');
+    <div style="width:100%;min-height:360px;display:flex;align-items:center;padding:42px 48px;
+    margin:0 0 30px;border-radius:18px;overflow:hidden;border:1px solid rgba(65,170,255,.65);
+    background-image:linear-gradient(90deg,rgba(2,12,31,.96) 0%,rgba(3,21,48,.88) 38%,rgba(0,40,100,.25) 100%),url('{image_url}');
     background-position:center;background-size:cover;background-repeat:no-repeat;
-    box-shadow:0 14px 40px rgba(0,0,0,.28);">
+    box-shadow:0 0 28px rgba(0,117,255,.20),0 16px 45px rgba(0,0,0,.35);">
       <div style="max-width:720px">
-        <div style="font-size:12px;letter-spacing:2.4px;text-transform:uppercase;color:#8dccff;font-weight:800">ALZHEIMER'S MRI · RESEARCH DASHBOARD</div>
-        <div style="font-size:clamp(30px,4vw,48px);line-height:1.12;font-weight:900;color:#f7fbff;margin:14px 0 12px;text-shadow:0 2px 12px rgba(0,0,0,.35)">{title}</div>
-        <div style="font-size:16px;line-height:1.6;color:#e1efff;max-width:650px;text-shadow:0 1px 8px rgba(0,0,0,.45)">{subtitle}</div>
+        <div style="font-size:12px;letter-spacing:2.8px;text-transform:uppercase;color:#48c8ff;font-weight:900">ALZHEIMER'S MRI · RESEARCH DASHBOARD</div>
+        <div style="font-size:clamp(32px,4.2vw,54px);line-height:1.08;font-weight:900;color:#f7fbff;margin:16px 0 14px;letter-spacing:-.5px;text-shadow:0 2px 12px rgba(0,0,0,.35)">{title}</div>
+        <div style="font-size:17px;line-height:1.65;color:#d8ecff;max-width:650px;text-shadow:0 1px 8px rgba(0,0,0,.45)">{subtitle}</div>
       </div>
     </div>
     """, unsafe_allow_html=True)
