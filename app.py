@@ -1,6 +1,8 @@
 import streamlit as st
 import tensorflow as tf
 import numpy as np
+import csv
+import io
 from PIL import Image
 from pathlib import Path
 
@@ -226,28 +228,62 @@ elif page == "MRI Analysis":
                             "Please verify the model and class order."
                         )
                     else:
-                        predicted_index = int(np.argmax(predictions))
-                        st.markdown("---")
-                        st.markdown(
-                            '<div class="kicker">ANALYSIS RESULT</div>',
-                            unsafe_allow_html=True,
-                        )
-                        st.markdown(f"### {CLASS_NAMES[predicted_index]}")
-                        st.info(
-                            f"Highest model output score: "
-                            f"**{predictions[predicted_index] * 100:.2f}%**"
-                        )
-                        st.markdown("#### Scores across all classes")
-                        for class_name, score in zip(CLASS_NAMES, predictions):
-                            st.write(f"**{class_name}** — {score * 100:.2f}%")
-                            st.progress(float(np.clip(score, 0.0, 1.0)))
-                        st.caption(
-                            "These are model output scores, not calibrated diagnostic "
-                            "probabilities or measures of medical certainty."
-                        )
-                        st.warning(
-                            "Research use only. Do not use this result to make medical decisions."
-                        )
+                        st.session_state["mri_prediction"] = predictions.tolist()
+                        st.session_state["mri_prediction_class"] = CLASS_NAMES[int(np.argmax(predictions))]
+                        st.session_state["mri_prediction_filename"] = uploaded_file.name
+
+                except Exception as error:
+                    st.error(f"Unable to run the model: {error}")
+
+            # Persist results in session state so the chart and report remain available
+            # after Streamlit reruns (for example, when downloading the report).
+            if "mri_prediction" in st.session_state:
+                saved_predictions = np.asarray(st.session_state["mri_prediction"], dtype=float)
+                saved_class = st.session_state["mri_prediction_class"]
+                st.markdown("---")
+                st.markdown('<div class="kicker">ANALYSIS RESULT</div>', unsafe_allow_html=True)
+                st.markdown(f"### Predicted dataset category: {saved_class}")
+                st.info(
+                    f"Highest model output score: "
+                    f"**{float(np.max(saved_predictions)) * 100:.2f}%**"
+                )
+                st.markdown("#### Model output scores")
+                score_table = {
+                    "Dataset category": CLASS_NAMES,
+                    "Output score (%)": [round(float(score) * 100, 2) for score in saved_predictions],
+                }
+                st.bar_chart(
+                    {"Output score (%)": score_table["Output score (%)"]},
+                    x=score_table["Dataset category"],
+                    horizontal=True,
+                )
+                for class_name, score in zip(CLASS_NAMES, saved_predictions):
+                    st.write(f"**{class_name}** — {float(score) * 100:.2f}%")
+                    st.progress(float(np.clip(score, 0.0, 1.0)))
+
+                report_buffer = io.StringIO()
+                writer = csv.writer(report_buffer)
+                writer.writerow(["MRI Classification Research Report"])
+                writer.writerow(["Uploaded file", st.session_state.get("mri_prediction_filename", uploaded_file.name)])
+                writer.writerow(["Predicted dataset category", saved_class])
+                writer.writerow(["Class", "Model output score (%)"])
+                for class_name, score in zip(CLASS_NAMES, saved_predictions):
+                    writer.writerow([class_name, f"{float(score) * 100:.2f}"])
+                writer.writerow([])
+                writer.writerow(["Disclaimer", "Academic research only; not for medical diagnosis or treatment."])
+                st.download_button(
+                    "Download prediction report (CSV)",
+                    data=report_buffer.getvalue(),
+                    file_name="mri_classification_research_report.csv",
+                    mime="text/csv",
+                    use_container_width=True,
+                )
+                st.caption(
+                    "Scores are model outputs, not calibrated diagnostic probabilities or medical certainty."
+                )
+                st.warning(
+                    "Research use only. Do not use this result to make medical decisions."
+                )
                 except Exception as error:
                     st.error(f"Unable to run the model: {error}")
         except Exception:
