@@ -370,6 +370,12 @@ elif page == "Dataset Information":
         with col:
             st.metric(label, f"{count:,} images")
     st.info("Total dataset images: 6,400. The class distribution is imbalanced, especially the Moderate Demented class.")
+    st.markdown("### Dataset distribution visual")
+    distribution = {
+        "MRI dataset class": [name for name, count in dataset_counts],
+        "Number of images": [count for name, count in dataset_counts],
+    }
+    st.bar_chart(distribution, x="MRI dataset class", y="Number of images", horizontal=True)
     st.caption("Dataset information is provided for academic project documentation.")
 
 elif page == "Model Performance":
