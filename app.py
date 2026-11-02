@@ -65,7 +65,7 @@ with st.sidebar:
     st.markdown("---")
     page = st.radio(
         "NAVIGATION",
-        ["Overview", "MRI Analysis", "Model Information", "About Project"],
+        ["Overview", "MRI Analysis", "Model Information", "Dataset Information", "Model Performance", "Project Team", "About Project"],
     )
     st.markdown("---")
     st.markdown("**PROJECT STATUS**")
@@ -218,7 +218,49 @@ elif page == "Model Information":
         "Accuracy and other performance metrics are therefore not fabricated or displayed."
     )
 
-else:
+elif page == "Dataset Information":
+    st.markdown('<div class="kicker">DATASET OVERVIEW</div>', unsafe_allow_html=True)
+    st.subheader("MRI Dataset Information")
+    st.write("The model was developed using a four-class Alzheimer's MRI image dataset.")
+    dataset_counts = [
+        ("Mild Demented", 896),
+        ("Moderate Demented", 64),
+        ("Non-Demented", 3200),
+        ("Very Mild Demented", 2240),
+    ]
+    st.markdown("### Class distribution")
+    cols = st.columns(4)
+    for col, (label, count) in zip(cols, dataset_counts):
+        with col:
+            st.metric(label, f"{count:,} images")
+    st.info("Total dataset images: 6,400. The class distribution is imbalanced, especially the Moderate Demented class.")
+    st.caption("Dataset information is provided for academic project documentation.")
+
+elif page == "Model Performance":
+    st.markdown('<div class="kicker">MODEL EVALUATION</div>', unsafe_allow_html=True)
+    st.subheader("Model Performance")
+    st.write("This dashboard currently does not include a verified final test-set evaluation report.")
+    st.warning("Accuracy, precision, recall, F1-score, and confusion matrix are not displayed here because verified final evaluation results have not been added.")
+    st.markdown("### Model configuration")
+    st.markdown("- Model: Convolutional Neural Network (CNN)\n- Input: 128 × 128 × 3 RGB image\n- Classes: 4\n- Preprocessing: resize and normalize pixel values to 0–1")
+    st.caption("Individual prediction scores shown in MRI Analysis are experimental model outputs, not diagnostic probabilities.")
+
+elif page == "Project Team":
+    st.markdown('<div class="kicker">PROJECT TEAM</div>', unsafe_allow_html=True)
+    st.subheader("Alzheimer’s Disease Stage Classification Using MRI")
+    st.markdown("### Project Lead & Website Developer")
+    st.markdown('<div class="panel"><h2>Shubhanshu Mishra</h2><p>Website implementation · UI design · Model integration · Deployment</p></div>', unsafe_allow_html=True)
+    st.markdown("### Team Members")
+    team_cols = st.columns(3)
+    for col, member in zip(team_cols, ["Brhamansh Singh", "Sumit Pathak", "Khushi"]):
+        with col:
+            st.markdown(f'<div class="panel"><h3>{member}</h3></div>', unsafe_allow_html=True)
+    st.markdown("### Faculty Guide")
+    st.markdown('<div class="panel"><h3>Kanika Kansal</h3></div>', unsafe_allow_html=True)
+    st.markdown("### Institution")
+    st.markdown('<div class="panel"><h3>IILM University, Greater Noida</h3></div>', unsafe_allow_html=True)
+
+elif page == "About Project":
     st.markdown('<div class="kicker">PROJECT OVERVIEW</div>', unsafe_allow_html=True)
     st.subheader("About this project")
     st.write(
