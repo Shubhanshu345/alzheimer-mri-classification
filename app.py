@@ -1,5 +1,4 @@
 import streamlit as st
-import tensorflow as tf
 import numpy as np
 import csv
 import io
@@ -17,14 +16,14 @@ st.set_page_config(
 # ---------------- Premium navy / blue theme ----------------
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+
 :root { --navy:#071426; --panel:#10233d; --blue:#4ea1ff; --muted:#9bb0c9; }
-html, body, [class*="css"] { font-family:'DM Sans',sans-serif; }
+html, body, [class*="css"] { font-family:Arial,sans-serif; }
 .stApp { background:radial-gradient(circle at 82% 0%,#17395d 0%,#0a1b30 36%,#071426 78%); color:#edf5ff; }
 .block-container { max-width:1400px; padding-top:2rem; padding-bottom:3rem; }
 [data-testid="stSidebar"] { background:#08172a; border-right:1px solid #1d3858; }
 [data-testid="stSidebar"] * { color:#dceaff; }
-h1,h2,h3 { font-family:'Manrope',sans-serif; color:#f4f8ff; }
+h1,h2,h3 { font-family:Arial,sans-serif; color:#f4f8ff; }
 .hero { padding:28px 30px; border:1px solid #2a4d72; border-radius:22px;
 background:linear-gradient(120deg,rgba(28,70,115,.92),rgba(13,32,55,.96)); margin-bottom:24px; }
 .eyebrow { color:#83c0ff; text-transform:uppercase; letter-spacing:2px; font-size:11px; font-weight:700; }
@@ -62,11 +61,20 @@ CLASS_NAMES = [
     "Very Mild Demented",
 ]
 
-@st.cache_resource
+@st.cache_resource(show_spinner="Loading CNN model (first load may take a little while)...")
 def load_model():
+    # Import TensorFlow only when the user requests MRI inference.
+    import tensorflow as tf
     if not MODEL_PATH.exists():
         raise FileNotFoundError(f"Model file not found: {MODEL_PATH.name}")
     return tf.keras.models.load_model(MODEL_PATH)
+
+@st.cache_data(show_spinner=False)
+def preprocess_image(image_bytes):
+    image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    image = image.resize((128, 128), Image.Resampling.BILINEAR)
+    array = np.asarray(image, dtype=np.float32) / 255.0
+    return np.expand_dims(array, axis=0)
 
 # ---------------- Sidebar navigation ----------------
 with st.sidebar:
@@ -93,7 +101,33 @@ st.markdown("""
 
 if page == "Overview":
     st.markdown('<div class="kicker">DASHBOARD OVERVIEW</div>', unsafe_allow_html=True)
-    st.subheader("Welcome to your research workspace")
+    visual_left, visual_right = st.columns([1.45, 0.75], vertical_alignment="center")
+    with visual_left:
+        st.subheader("Welcome to your research workspace")
+        st.write("A CNN-powered academic interface for exploring MRI image classification.")
+        st.markdown("""
+        <div class="panel">
+          <div style="font-size:13px;color:#8fc8ff;font-weight:700;letter-spacing:1.2px">PROJECT SNAPSHOT</div>
+          <div style="font-size:24px;font-weight:800;margin:8px 0">Brain MRI · Deep Learning · Streamlit</div>
+          <div style="color:#b9cde2">Upload an image, explore the model output, and review the research workflow.</div>
+        </div>
+        """, unsafe_allow_html=True)
+    with visual_right:
+        st.markdown("""
+        <div style="border:1px solid #315779;border-radius:22px;padding:24px;text-align:center;
+        background:radial-gradient(circle at 50% 35%,#284f7b,#0d2037 75%);">
+          <svg viewBox="0 0 220 180" width="100%" role="img" aria-label="Stylized brain MRI illustration">
+            <defs><radialGradient id="brainGlow"><stop offset="0%" stop-color="#b8d9ff"/><stop offset="100%" stop-color="#3d78b8"/></radialGradient></defs>
+            <ellipse cx="110" cy="88" rx="79" ry="72" fill="#09192b" stroke="#68b6ff" stroke-width="3"/>
+            <ellipse cx="110" cy="88" rx="62" ry="57" fill="url(#brainGlow)" opacity=".9"/>
+            <path d="M110 35 C91 28 76 46 82 61 C61 62 57 83 72 95 C60 113 79 132 96 122 C103 139 117 139 124 122 C145 133 162 113 148 96 C166 80 154 62 138 60 C143 43 125 31 110 35Z" fill="#d8eaff" stroke="#eaf5ff" stroke-width="2"/>
+            <path d="M109 38 L109 124 M83 57 C99 60 97 76 85 83 M136 58 C120 62 123 78 137 84 M73 94 C91 91 97 104 92 118 M149 94 C132 91 124 104 129 119 M95 45 C88 54 101 63 109 59 M126 44 C133 55 120 64 109 59" fill="none" stroke="#4d83b7" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="168" cy="34" r="7" fill="#65d5ff"/><circle cx="48" cy="134" r="5" fill="#8e83ff"/>
+          </svg>
+          <div style="font-weight:800;font-size:17px">AI-assisted MRI Research</div>
+          <div style="color:#a9c6e4;font-size:12px">Academic prototype · Non-diagnostic</div>
+        </div>
+        """, unsafe_allow_html=True)
     st.write("Upload an MRI image, run the trained model, and review its experimental output scores.")
     cols = st.columns(3)
     metrics = [
@@ -198,7 +232,10 @@ elif page == "MRI Analysis":
             preview_col, details_col = st.columns([1.1, 1])
             with preview_col:
                 st.markdown("#### MRI preview")
-                st.image(original_image, use_container_width=True)
+                preview_image = original_image.copy()
+                preview_image.thumbnail((480, 480), Image.Resampling.BILINEAR)
+                st.image(preview_image, use_container_width=True)
+                st.caption("Preview optimized for faster display; model input is resized to 128 × 128.")
             with details_col:
                 st.markdown("#### Image information")
                 st.markdown(
@@ -215,9 +252,7 @@ elif page == "MRI Analysis":
                 try:
                     with st.spinner("Loading model and analysing image..."):
                         model = load_model()
-                        resized_image = original_image.resize((128, 128))
-                        image_array = np.asarray(resized_image, dtype=np.float32) / 255.0
-                        image_array = np.expand_dims(image_array, axis=0)
+                        image_array = preprocess_image(uploaded_file.getvalue())
                         predictions = np.asarray(
                             model.predict(image_array, verbose=0)[0], dtype=float
                         )
