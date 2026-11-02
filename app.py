@@ -100,33 +100,34 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# ---------------- Full-width visual hero banners for all dashboard sections ----------------
-def render_section_hero(title, subtitle, artwork):
+# ---------------- Full-width photo banners for dashboard sections ----------------
+SECTION_BANNERS = {
+    "Overview": "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1800&q=85",
+    "MRI Analysis": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1800&q=85",
+    "Model Information": "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1800&q=85",
+    "Dataset Information": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1800&q=85",
+    "Model Performance": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1800&q=85",
+    "Project Team": "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1800&q=85",
+    "About Project": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1800&q=85",
+}
+
+def render_section_hero(title, subtitle, image_url):
     st.markdown(f"""
-    <div style="width:100%;min-height:205px;display:flex;align-items:center;justify-content:space-between;gap:24px;
-    padding:24px 34px;margin:0 0 25px;border-radius:24px;overflow:hidden;border:1px solid #315779;
-    background:linear-gradient(115deg,#102a49 0%,#123b62 48%,#07182b 100%);box-shadow:0 12px 36px rgba(0,0,0,.20);">
-      <div style="flex:1;min-width:0">
-        <div style="font-size:11px;letter-spacing:2.2px;text-transform:uppercase;color:#7fc5ff;font-weight:800">ALZHEIMER'S MRI · RESEARCH DASHBOARD</div>
-        <div style="font-size:clamp(25px,3.2vw,38px);line-height:1.15;font-weight:800;color:#f4f8ff;margin:12px 0 10px">{title}</div>
-        <div style="font-size:15px;line-height:1.55;color:#c1d8ef;max-width:680px">{subtitle}</div>
+    <div style="width:100%;min-height:300px;display:flex;align-items:center;padding:36px 42px;
+    margin:0 0 28px;border-radius:24px;overflow:hidden;border:1px solid #315779;
+    background-image:linear-gradient(90deg,rgba(5,16,31,.94) 0%,rgba(7,24,43,.82) 43%,rgba(7,24,43,.18) 100%),url('{image_url}');
+    background-position:center;background-size:cover;background-repeat:no-repeat;
+    box-shadow:0 14px 40px rgba(0,0,0,.28);">
+      <div style="max-width:720px">
+        <div style="font-size:12px;letter-spacing:2.4px;text-transform:uppercase;color:#8dccff;font-weight:800">ALZHEIMER'S MRI · RESEARCH DASHBOARD</div>
+        <div style="font-size:clamp(30px,4vw,48px);line-height:1.12;font-weight:900;color:#f7fbff;margin:14px 0 12px;text-shadow:0 2px 12px rgba(0,0,0,.35)">{title}</div>
+        <div style="font-size:16px;line-height:1.6;color:#e1efff;max-width:650px;text-shadow:0 1px 8px rgba(0,0,0,.45)">{subtitle}</div>
       </div>
-      <div style="width:clamp(130px,22%,245px);flex-shrink:0">{artwork}</div>
     </div>
     """, unsafe_allow_html=True)
 
-HERO_ART = {
- "Overview": '<svg viewBox="0 0 220 150" width="100%"><ellipse cx="110" cy="75" rx="76" ry="64" fill="#0b1c31" stroke="#5bb7ff" stroke-width="3"/><path d="M110 22 C88 10 68 32 76 49 C52 55 54 78 70 88 C59 108 80 126 97 114 C105 132 117 132 125 114 C146 127 166 106 150 88 C169 72 158 52 140 49 C146 29 126 18 110 22Z" fill="#b9dcff" stroke="#e4f4ff" stroke-width="2"/><path d="M110 25V117M82 44Q100 55 89 70M139 44Q122 55 133 70M72 88Q93 82 94 109M150 88Q130 83 127 109" fill="none" stroke="#4b83b8" stroke-width="4" stroke-linecap="round"/></svg>',
- "MRI Analysis": '<svg viewBox="0 0 220 150" width="100%"><rect x="28" y="12" width="164" height="126" rx="16" fill="#0b1c31" stroke="#5bb7ff" stroke-width="2"/><circle cx="110" cy="75" r="49" fill="#253d59" stroke="#9dd7ff" stroke-width="3"/><circle cx="110" cy="75" r="37" fill="#9fb8d0"/><path d="M110 39C90 36 77 54 84 68C70 81 88 104 101 94C109 110 124 99 126 92C145 100 153 79 137 68C143 52 124 37 110 39Z" fill="#e5edf5"/><path d="M110 42V98M87 62Q104 70 92 82M132 60Q119 70 132 83" stroke="#536e89" stroke-width="4" fill="none"/></svg>',
- "Model Information": '<svg viewBox="0 0 220 150"><g stroke="#62bdff" stroke-width="2" fill="#143b61"><circle cx="40" cy="40" r="14"/><circle cx="40" cy="110" r="14"/><circle cx="110" cy="28" r="14"/><circle cx="110" cy="75" r="14"/><circle cx="110" cy="122" r="14"/><circle cx="180" cy="50" r="14"/><circle cx="180" cy="100" r="14"/></g><g stroke="#8bd5ff" stroke-width="2"><path d="M54 40L96 28M54 40L96 75M54 110L96 75M54 110L96 122M124 28L166 50M124 75L166 50M124 75L166 100M124 122L166 100"/></g></svg>',
- "Dataset Information": '<svg viewBox="0 0 220 150"><rect x="22" y="16" width="176" height="118" rx="14" fill="#0b1c31" stroke="#5bb7ff" stroke-width="2"/><g fill="#3c8fdb"><rect x="42" y="86" width="24" height="30" rx="4"/><rect x="78" y="58" width="24" height="58" rx="4"/><rect x="114" y="30" width="24" height="86" rx="4"/><rect x="150" y="70" width="24" height="46" rx="4"/></g><path d="M34 118H184" stroke="#b9dcff" stroke-width="2"/><circle cx="54" cy="39" r="8" fill="#8c83ff"/><circle cx="82" cy="39" r="8" fill="#5bd7ff"/><circle cx="110" cy="39" r="8" fill="#68e0b0"/></svg>',
- "Model Performance": '<svg viewBox="0 0 220 150"><rect x="20" y="14" width="180" height="122" rx="14" fill="#0b1c31" stroke="#5bb7ff" stroke-width="2"/><path d="M44 112L80 83L108 95L150 48L178 35" stroke="#68d6ff" stroke-width="5" fill="none" stroke-linecap="round"/><g fill="#d8f3ff" stroke="#4ea1ff" stroke-width="3"><circle cx="44" cy="112" r="6"/><circle cx="80" cy="83" r="6"/><circle cx="108" cy="95" r="6"/><circle cx="150" cy="48" r="6"/><circle cx="178" cy="35" r="6"/></g></svg>',
- "Project Team": '<svg viewBox="0 0 220 150"><circle cx="75" cy="48" r="25" fill="#5ba8ff"/><circle cx="148" cy="48" r="25" fill="#8a7bff"/><circle cx="111" cy="38" r="25" fill="#b2dcff"/><path d="M30 130Q34 82 75 82Q116 82 120 130Z" fill="#2865a0"/><path d="M100 130Q104 75 148 75Q192 75 196 130Z" fill="#5147a6"/><path d="M65 130Q69 70 111 70Q153 70 157 130Z" fill="#3c8ecb"/></svg>',
- "About Project": '<svg viewBox="0 0 220 150"><rect x="42" y="16" width="136" height="118" rx="15" fill="#0b1c31" stroke="#5bb7ff" stroke-width="2"/><path d="M70 45H150M70 65H150M70 85H130" stroke="#80c8ff" stroke-width="5" stroke-linecap="round"/><circle cx="110" cy="111" r="10" fill="#7d83ff"/><path d="M105 111L109 115L116 107" stroke="white" stroke-width="2.5" fill="none"/></svg>'
-}
-
 if page == "Overview":
-    render_section_hero("Alzheimer's MRI Classification", "AI-powered academic research prototype for exploring brain MRI image classification.", HERO_ART["Overview"])
+    render_section_hero("Alzheimer's MRI Classification", "AI-powered academic research prototype for exploring brain MRI image classification.", SECTION_BANNERS["Overview"])
     st.markdown('<div class="kicker">DASHBOARD OVERVIEW</div>', unsafe_allow_html=True)
     visual_left, visual_right = st.columns([1.45, 0.75], vertical_alignment="center")
     with visual_left:
@@ -246,7 +247,7 @@ if page == "Overview":
     st.caption("Workflow reflects the current app implementation. Model output is experimental and not a clinical assessment.")
 
 elif page == "MRI Analysis":
-    render_section_hero("MRI Analysis", "Upload and preview an MRI image, run the CNN model, and inspect experimental class outputs.", HERO_ART["MRI Analysis"])
+    render_section_hero("MRI Analysis", "Upload and preview an MRI image, run the CNN model, and inspect experimental class outputs.", SECTION_BANNERS["MRI Analysis"])
     st.markdown('<div class="kicker">IMAGE INFERENCE</div>', unsafe_allow_html=True)
     st.subheader("Upload MRI for analysis")
     st.write("Supported formats: JPG, JPEG, PNG.")
@@ -361,7 +362,7 @@ elif page == "MRI Analysis":
         )
 
 elif page == "Model Information":
-    render_section_hero("Model Information", "Explore the CNN model, preprocessing pipeline, and inference integration.", HERO_ART["Model Information"])
+    render_section_hero("Model Information", "Explore the CNN model, preprocessing pipeline, and inference integration.", SECTION_BANNERS["Model Information"])
     st.markdown('<div class="kicker">TECHNICAL DETAILS</div>', unsafe_allow_html=True)
     st.subheader("Model information")
     left, right = st.columns(2)
@@ -384,7 +385,7 @@ elif page == "Model Information":
     )
 
 elif page == "Dataset Information":
-    render_section_hero("Dataset Information", "Review dataset labels, image counts, and class distribution.", HERO_ART["Dataset Information"])
+    render_section_hero("Dataset Information", "Review dataset labels, image counts, and class distribution.", SECTION_BANNERS["Dataset Information"])
     st.markdown('<div class="kicker">DATASET OVERVIEW</div>', unsafe_allow_html=True)
     st.subheader("MRI Dataset Information")
     st.write("The model was developed using a four-class Alzheimer's MRI image dataset.")
@@ -409,7 +410,7 @@ elif page == "Dataset Information":
     st.caption("Dataset information is provided for academic project documentation.")
 
 elif page == "Model Performance":
-    render_section_hero("Model Performance", "Review evaluation information and the limitations of experimental model outputs.", HERO_ART["Model Performance"])
+    render_section_hero("Model Performance", "Review evaluation information and the limitations of experimental model outputs.", SECTION_BANNERS["Model Performance"])
     st.markdown('<div class="kicker">MODEL EVALUATION</div>', unsafe_allow_html=True)
     st.subheader("Model Performance")
     st.write("This dashboard currently does not include a verified final test-set evaluation report.")
@@ -419,7 +420,7 @@ elif page == "Model Performance":
     st.caption("Individual prediction scores shown in MRI Analysis are experimental model outputs, not diagnostic probabilities.")
 
 elif page == "Project Team":
-    render_section_hero("Project Team & Institution", "Meet the project members and view the academic institution details.", HERO_ART["Project Team"])
+    render_section_hero("Project Team & Institution", "Meet the project members and view the academic institution details.", SECTION_BANNERS["Project Team"])
     st.markdown('<div class="kicker">PROJECT TEAM & INSTITUTION</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="institution-banner">
@@ -470,7 +471,7 @@ elif page == "Project Team":
     st.caption("This is an academic research prototype and is not intended for clinical diagnosis.")
 
 elif page == "About Project":
-    render_section_hero("About the Project", "Project background, objectives, scope, and research disclaimer.", HERO_ART["About Project"])
+    render_section_hero("About the Project", "Project background, objectives, scope, and research disclaimer.", SECTION_BANNERS["About Project"])
     st.markdown('<div class="kicker">PROJECT OVERVIEW</div>', unsafe_allow_html=True)
     st.subheader("About this project")
     st.write(
