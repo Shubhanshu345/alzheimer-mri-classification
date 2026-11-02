@@ -127,6 +127,40 @@ if page == "Overview":
         )
         st.markdown('</div>', unsafe_allow_html=True)
 
+    st.markdown("---")
+    st.markdown('<div class="kicker">PROJECT PURPOSE</div>', unsafe_allow_html=True)
+    objective_col, abstract_col = st.columns([0.9, 1.3])
+    with objective_col:
+        st.markdown('<div class="panel">', unsafe_allow_html=True)
+        st.markdown("### Project Objective")
+        st.write(
+            "To develop an academic CNN-based system that explores classification of "
+            "brain MRI images into four dataset categories: Mild Demented, Moderate "
+            "Demented, Non-Demented, and Very Mild Demented."
+        )
+        st.markdown("#### Key objectives")
+        st.markdown(
+            "- Prepare MRI images using resizing and pixel normalization.\\n"
+            "- Integrate a trained CNN model into a web application.\\n"
+            "- Provide an easy-to-use interface for image upload and model output review."
+        )
+        st.markdown('</div>', unsafe_allow_html=True)
+    with abstract_col:
+        st.markdown('<div class="panel">', unsafe_allow_html=True)
+        st.markdown("### Abstract")
+        st.write(
+            "Alzheimer’s disease is a progressive condition that affects memory and "
+            "cognitive function. This academic project explores the use of deep learning "
+            "for classifying brain MRI images into four dataset-defined categories. "
+            "A Convolutional Neural Network (CNN) is integrated with a Streamlit "
+            "application. Uploaded images are converted to RGB, resized to 128 × 128 "
+            "pixels, and normalized before inference. The application displays the "
+            "predicted dataset class and the model’s output scores to support learning "
+            "and experimentation. The system is a research prototype only; its outputs "
+            "are not medical diagnoses and must not guide clinical decisions."
+        )
+        st.markdown('</div>', unsafe_allow_html=True)
+
 elif page == "MRI Analysis":
     st.markdown('<div class="kicker">IMAGE INFERENCE</div>', unsafe_allow_html=True)
     st.subheader("Upload MRI for analysis")
